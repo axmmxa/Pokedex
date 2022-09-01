@@ -1,0 +1,160 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.header {
+    height: 150px;
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.header > img {
+    height: 150px;
+    margin-right: 20rem;
+}
+
+#input{
+    position: relative;
+    background: #fff;
+    border: 10px solid #FECB03;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+
+.content {
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.main-container {
+    height: 300px;
+    width: 300px;
+    /*background-color: #f57e07;*/
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    border-radius: 30px;
+    
+    
+}
+
+.main-container:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 15px 15px 15px rgba(30,30,30,.6);
+}
+
+.main-container > img {
+    width: 37%;
+}
+
+
+
+/* single pokecard */
+
+#poke-card:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 15px 15px 15px rgba(30,30,30,.6);
+}
+
+.card-main-info {
+    min-height: 50vh;
+    width: 600px;
+    
+    color: white;
+    display: flex;
+    
+    align-items: center;
+    padding: 24px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#headline-info {
+    width: 550px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#card-main-info > img {
+    width: 250px;
+}
+
+.main-info {
+    width: 550px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.move-button {
+    height: 30px;
+}
+
+#close-button {
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#poke-more-info {
+    min-height: 50vh;
+    width: 600px;
+    background-color: white;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: -80px;
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+#poke-more-info > h1 {
+    margin-top: 20px;
+}
+
+
+
+/*responsive */
+
+
+@media (max-width: 1024px) {
+
+    .header{
+        height: 250px;
+        flex-direction: column;
+        
+    }
+
+    .header > img {
+        height: 150px;
+        margin-right: 0;
+    }
+
+}
