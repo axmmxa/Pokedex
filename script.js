@@ -1,11 +1,11 @@
 
 // globale Variables
-let i
+
 
 let amountOfPoke = 20
 
-let allPokemon =[]
-let allPokemonSpecial =[]
+let allPokemon = []
+let allPokemonSpecial = []
 
 // Main Data
 
@@ -19,13 +19,11 @@ let specialAttack
 let specialDefense
 let speed
 
-
-
 // Load and process API Data
 
 async function loadPokemon() {
 
-    for(i=1; i<amountOfPoke; i++) {
+    for (i = 1; i < amountOfPoke; i++) {
 
         let url = `https://pokeapi.co/api/v2/pokemon/${i}`
         let response = await fetch(url)
@@ -33,40 +31,33 @@ async function loadPokemon() {
 
         allPokemon.push(currentPokemon)
 
-        
         let urlSpecial = `https://pokeapi.co/api/v2/pokemon-species/${i}`
         let responseSpecial = await fetch(urlSpecial)
         let currentPokemonSpecial = await responseSpecial.json()
 
 
         allPokemonSpecial.push(currentPokemonSpecial)
-
-
     }
 }
-     
-     
+
+
 
 // Pokemon Card Data 
 
 
 function cardData(i) {
 
-         hp = allPokemon[i]['stats']['0']['base_stat']
-         attack = allPokemon[i]['stats']['1']['base_stat']
-         defense = allPokemon[i]['stats']['2']['base_stat']
-         specialAttack = allPokemon[i]['stats']['3']['base_stat']
-         specialDefense = allPokemon[i]['stats']['4']['base_stat']
-         speed = allPokemon[i]['stats']['5']['base_stat']
+    hp = allPokemon[i]['stats']['0']['base_stat']
+    attack = allPokemon[i]['stats']['1']['base_stat']
+    defense = allPokemon[i]['stats']['2']['base_stat']
+    specialAttack = allPokemon[i]['stats']['3']['base_stat']
+    specialDefense = allPokemon[i]['stats']['4']['base_stat']
+    speed = allPokemon[i]['stats']['5']['base_stat']
 
-         console.log(attack)
 }
 
 
 function setColorMain(i) {
-    
-    
-
     let mainContainer = document.getElementById(`main-container-${i}`)
     mainContainer.classList.add('main-container')
     mainContainer.classList.add('main-container:hover')
@@ -77,51 +68,48 @@ function setColorMain(i) {
 }
 
 function setColorCard(i) {
-    console.log(i)
     let cardMainInfo = document.getElementById(`card-main-info`)
     cardMainInfo.classList.add('card-main-info')
 
     currentColor = allPokemonSpecial[i]['color']['name']
     cardMainInfo.style.backgroundColor = `${currentColor}`
-    
-    
+
+
 }
 
 // search for Pokemon 
 
 function searchPoke() {
 
-    for (i=0; i<amountOfPoke - 1; i++) {
+    for (i = 0; i < amountOfPoke - 1; i++) {
 
         let currentName = (allPokemon[i]['name'])
-        
+
 
         let search = document.getElementById('input').value
         search = search.toLowerCase()
-        
+
 
         if (currentName == search) {
             openCard(i)
         }
     }
-    
-    
-    
-    
-    
 }
 
 // open Pokemon Card
 
 async function openCard(i) {
-
     await cardData(i)
+    document.getElementById('body').innerHTML = ''
+    document.getElementById('body').innerHTML += generateHTMLPokemonCard(i);
+    setColorCard(i)
+    console.log("amount open ", amountOfPoke)
+}
 
-    document.getElementById('content').innerHTML = ''
-    document.getElementById('more-poke')= ''
-
-    document.getElementById('content').innerHTML += `
-
+// generate html single pokecard
+function generateHTMLPokemonCard(i) {
+    return `
+    <div id="content" class="content">
 
         <div id="poke-card">
 
@@ -130,17 +118,13 @@ async function openCard(i) {
                 <div id="headline-info">
                     <button id="close-button" onclick="closeCard(${i})">x</button>
                     <h1>${allPokemon[i]['name']}</h1>
-                    <h1>#${i+1}</h1>
+                    <h1>#${i + 1}</h1>
                 </div>
 
                 <div class="main-info">
                     <button class="move-button" id="backwards-button" onclick="backward(${i})"><img src="img/media-skip-backward-24.png"></button>
                     <img src="${allPokemon[i]['sprites']['other']['dream_world']['front_default']}">
                     <button class="move-button" id="forward-button" onclick="forward(${i})"><img src="img/media-skip-forward-24.png"></button>
-                    
-                    
-
-                    
                 </div>
                 
 
@@ -188,117 +172,98 @@ async function openCard(i) {
 
             </div>
         </div>
-
+        </div>
     `
-    setColorCard(i)
-    
 }
-
 
 // change Poke cards
 
 function forward(f) {
-
-            if ( f == 18) {
-                closeCard()
-            } else { 
-                document.getElementById('content').innerHTML =''
-                f++
-                openCard(f)
-            }  
+    console.log("f", f)
+    if (f == amountOfPoke - 2) {
+        closeCard()
+    } else {
+        document.getElementById('content').innerHTML = ''
+        f++
+        openCard(f)
+    }
 }
 
 
 function backward(b) {
-
-         if (b == 0){
-            closeCard()
-         } else {
-            document.getElementById('content').innerHTML =''
-            b--
-            openCard(b)
-         }
+    if (b == 0) {
+        closeCard()
+    } else {
+        document.getElementById('content').innerHTML = ''
+        b--
+        openCard(b)
+    }
 }
-
-
-
 
 // close Poke cards
 
 function closeCard() {
-    console.log("close")
-    document.getElementById('content').innerHTML =''
-    document.getElementById('more-poke')=''
-    document.getElementById('input').value =''
     render()
-
 }
+
 
 // load more Pokemon
-function morePoke() {
-
-    
-    
-    
+async function morePoke() {
+    let morePokeButton = document.querySelector('#more-poke-button')
+    morePokeButton.disabled = true
+    allPokemon = []
     amountOfPoke = amountOfPoke + 20
-    
-
-    
+    await loadPokemon()
     render()
+    console.log("amount", amountOfPoke)
 }
-
-
 
 // Render Function
 
 async function render() {
 
-            await loadPokemon()
-            
-            console.log(allPokemon)
-            console.log(allPokemonSpecial)
+    await loadPokemon()
+
+    console.log(allPokemon)
+
+    document.getElementById('body').innerHTML = ''
+    document.getElementById('body').innerHTML += generateHTMLmain()
+
+    for (let i = 0; i < amountOfPoke - 1; i++) {
+        document.getElementById('content').innerHTML += genterateHTMLmainInfo(i)
+        setColorMain(i)
+    }
+
+}
 
 
-            document.getElementById('content').innerHTML =''
-            
 
-            for (i=0; i<amountOfPoke-1; i++) {
+function generateHTMLmain() {
+    return `
 
-                
+    <header id="header" class="header">
+        <img src="img/pokemon-logo.png" alt="">
+        <input type="text" id="input" onkeydown="searchPoke()" placeholder="Find Pokemon">
+    </header>
 
-                document.getElementById('content').innerHTML += `
+    <div id="content" class="content">
 
-                    
-                    <div id="main-container-${i}" onclick="openCard(${i})">
-                    <h1>${allPokemon[i]['name']}</h1>
-                    <img src="${allPokemon[i]['sprites']['other']['dream_world']['front_default']}">
-                    <h2>#${i+1}</h2>
-                    </div>
-                    
+    </div>
 
-                    
+    <div id="more-poke">
+        <button id="more-poke-button" onclick="morePoke()"><img src="img/down-button.png"></button>
+    </div>
+`
+}
 
-                `
-                setColorMain(i)
-            }
+function genterateHTMLmainInfo(i) {
+    return `
+    <div id="main-container-${i}" onclick="openCard(${i})">
+    <h1>${allPokemon[i]['name']}</h1>
+    <img src="${allPokemon[i]['sprites']['other']['dream_world']['front_default']}">
+    <h2>#${i + 1}</h2>
+    </div>
+`
+}
 
-           
 
-            let morePoke = document.getElementById('more-poke')
-            morePoke.innerHTML =''
-            
-            morePoke.innerHTML += `
-            
-                <button onclick="morePoke()"><img src="img/down-button.png"></button>
-           
-            `
-
-            
-            
-            
-            
-        }
-        
-
-        
-    
